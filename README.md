@@ -48,7 +48,7 @@ Routes -
 | `DELETE` | `/tasks/{id}/`    | `destroy`        | Delete a task          |
 
 
-# Async Task Management using Celery
+# Task Management using Celery
 
 1. ## Using Shell for Checking Deadlines Manually
 
