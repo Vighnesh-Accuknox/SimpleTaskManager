@@ -44,18 +44,28 @@ class User(AbstractBaseUser):
 
     
 class Project(models.Model):
-    project_name = models.CharField(null=False)
+    project_name = models.CharField(null=False, max_length=256)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="admin")
 
     def __str__(self):
         return f"{self.project_name} - {self.created_by.username}"
+    
+class StatusChoices(models.TextChoices):
+    PENDING = 'pending', 'Pending'
+    ONGOING = 'ongoing', 'ongoing'
+    COMPLETED = 'completed', 'Completed'
 
 class Task(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="taskadmin")
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="assigned_to")
-    title = models.CharField(null=False)
-    description = models.CharField(null=False)
-    status = models.CharField(null=False, default="pending")
+    title = models.CharField(null=False, max_length=256) 
+    description = models.CharField(null=False, max_length=256)
+    status = models.CharField(
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.PENDING,
+        null=False
+    )
     deadline = models.DateTimeField(null=False)
 
     def __str__(self):

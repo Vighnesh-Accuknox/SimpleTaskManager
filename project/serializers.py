@@ -20,7 +20,7 @@ class CheckUserSerializer(serializers.ModelSerializer): #for User Login
         fields = ['id', 'username', 'password']
 
 class TaskSerializer(serializers.ModelSerializer): #for Tasks 
-    
+    created_by = serializers.ReadOnlyField(source='created_by.id')
     class Meta:
         model = Task
         fields = '__all__'

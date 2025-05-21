@@ -8,6 +8,14 @@ A basic Task Management app where users can:
 - Admin panel for managing users, tasks, and projects
 - Some basic filtering APIs (e.g., tasks by status, due date, assigned project)
 
+TODOs-
+- Dockerize the application ✅
+- FilterSets
+- ENUMs - ✅
+- Middleware for authentication ✅
+- Test Cases ✅
+- ENV and DB changes ✅
+
 To Start the project
 ```bash
 #create a virtualenv

@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
+from dotenv import load_dotenv
 from pathlib import Path
+import dj_database_url
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7#v$x*9z)$s=^0m=oa!z-xt!v5p6&)82v0^$5kl5v+#hb8s%@j'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,7 +43,8 @@ INSTALLED_APPS = [
     'project',
     'rest_framework',
     'django_celery_beat',
-    'rest_framework_simplejwt' 
+    'rest_framework_simplejwt',
+    'django_filters',
 ]
 
 REST_FRAMEWORK = {
@@ -50,6 +54,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 
@@ -61,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'project.middlewares.CustomMiddleware'
 ]
 
 ROOT_URLCONF = 'assignment.urls'
@@ -87,13 +93,12 @@ WSGI_APPLICATION = 'assignment.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+     'default': dj_database_url.parse(
+        os.getenv('POSTGRES_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -135,8 +140,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = 'redis://default:VUfAvcqOTSEHy8TYqeymDDDMpcXdASxQ@redis-10467.c9.us-east-1-4.ec2.redns.redis-cloud.com:10467'
-CELERY_RESULT_BACKEND = 'redis://default:VUfAvcqOTSEHy8TYqeymDDDMpcXdASxQ@redis-10467.c9.us-east-1-4.ec2.redns.redis-cloud.com:10467'
+#use ENV file for this.
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True

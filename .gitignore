@@ -1,7 +1,7 @@
 .venv/
 venv/
 ENV/
-env/
-.accuknox/
-
+.env*
+.git/
 celerybeat-*
+db.sqlite3
