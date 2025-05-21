@@ -12,6 +12,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'check-db-every-minute': {
         'task': 'project.tasks.send_upcoming_deadline_reminders', 
-        'schedule': crontab(minute='*/1'),  #for 
+        'schedule': crontab(minute='*/1'),  #for checking every minute
     },
 }

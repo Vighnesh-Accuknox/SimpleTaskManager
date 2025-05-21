@@ -44,7 +44,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated]
-
+    #use AdminMiddleWare for this - Better Approach.
     def perform_create(self, serializer):
         if not self.request.user.is_admin:
             raise PermissionDenied("Only admins can create projects.")
@@ -65,7 +65,9 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
+    #FilterSets.
+
+    def get_queryset(self): #all data.
         queryset = Task.objects.all()
         status = self.request.query_params.get('status')
         project = self.request.query_params.get('project')
