@@ -10,7 +10,7 @@ A basic Task Management app where users can:
 
 TODOs-
 - Dockerize the application ✅
-- FilterSets
+- FilterSets ✅
 - ENUMs - ✅
 - Middleware for authentication ✅
 - Test Cases ✅
