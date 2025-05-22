@@ -17,6 +17,7 @@ class CustomUserManager(BaseUserManager):
         user = self.create_user(username, email, password)
         user.is_admin = True
         user.is_staff = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
@@ -44,7 +45,7 @@ class User(AbstractBaseUser):
 
     
 class Project(models.Model):
-    project_name = models.CharField(null=False, max_length=256)
+    project_name = models.CharField(null=False, max_length=256, unique=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="admin")
 
     def __str__(self):
@@ -58,7 +59,7 @@ class StatusChoices(models.TextChoices):
 class Task(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="taskadmin")
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="assigned_to")
-    title = models.CharField(null=False, max_length=256) 
+    title = models.CharField(null=False, max_length=256, unique=True) 
     description = models.CharField(null=False, max_length=256)
     status = models.CharField(
         max_length=20,
